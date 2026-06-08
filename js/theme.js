@@ -1,0 +1,6 @@
+/* ===== THEME MANAGEMENT ===== */
+let currentTheme='auto';
+function initTheme(){const s=localStorage.getItem('omr_theme');if(s)currentTheme=s;applyTheme();window.matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(currentTheme==='auto')applyTheme();});}
+function applyTheme(){const h=document.documentElement;if(currentTheme==='light')h.setAttribute('data-theme','light');else if(currentTheme==='dark')h.setAttribute('data-theme','dark');else{if(window.matchMedia('(prefers-color-scheme: light)').matches)h.setAttribute('data-theme','light');else h.removeAttribute('data-theme');}updateThemeButtons();}
+function toggleTheme(){if(currentTheme==='auto')currentTheme='light';else if(currentTheme==='light')currentTheme='dark';else currentTheme='auto';localStorage.setItem('omr_theme',currentTheme);applyTheme();toast(currentTheme==='auto'?'🔄 自動模式':currentTheme==='light'?'☀️ 淺色模式':'🌙 深色模式');}
+function updateThemeButtons(){const icon=currentTheme==='auto'?'🔄':currentTheme==='light'?'☀️':'🌙';document.querySelectorAll('.theme-toggle').forEach(b=>{b.textContent=icon;b.title=currentTheme==='auto'?'自動（跟隨系統）':currentTheme==='light'?'淺色模式':'深色模式';});}
