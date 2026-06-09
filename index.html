@@ -211,7 +211,7 @@ select:focus,.text-input:focus,.num-input:focus{border-color:rgba(var(--p),.6);b
 .calib-col-right{min-width:0}
 .calib-col-right .cwrap{margin:0}
 .calib-col-right .cwrap canvas{height:auto}
-.answer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:5px;max-height:340px;overflow-y:auto;padding:4px}
+.answer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(204px,1fr));gap:5px;max-height:340px;overflow-y:auto;padding:4px}
 .aitem{display:flex;align-items:center;gap:3px;padding:7px 9px;background:var(--white-alpha-02);border-radius:var(--radius-xs);font-size:.78em;border:1px solid var(--border);transition:border-color .2s}
 .aitem:hover{border-color:var(--border2)}
 .aitem .qn{font-weight:700;color:var(--p2);min-width:28px;font-size:.8em}
@@ -221,6 +221,10 @@ select:focus,.text-input:focus,.num-input:focus{border-color:rgba(var(--p),.6);b
 .aitem .o.sel-ok{background:linear-gradient(135deg,rgb(var(--teal)),rgb(var(--blue)));border-color:transparent;color:#fff;box-shadow:0 2px 14px rgba(var(--teal),.6);font-weight:800}
 .aitem .o.sel-ng{background:linear-gradient(135deg,rgb(var(--rose)),#e11d48);border-color:transparent;color:#fff;box-shadow:0 2px 14px rgba(var(--rose),.6);font-weight:800}
 .aitem .o.key-mark{border-color:rgb(var(--teal));color:rgb(var(--teal))}
+/* 試卷編輯：個別題目「多選答案」勾選方格 */
+.ak-multi-toggle{display:inline-flex;align-items:center;gap:4px;margin-left:auto;font-size:.66em;font-weight:700;color:var(--text3);cursor:pointer;padding:3px 7px;border-radius:8px;border:1px solid var(--border);user-select:none;white-space:nowrap;flex-shrink:0}
+.ak-multi-toggle.on{color:rgb(var(--cyan));border-color:rgba(var(--cyan),.3);background:rgba(var(--cyan),.08)}
+.ak-multi-toggle input{width:13px;height:13px}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:5px}
 .ritem{display:flex;align-items:center;gap:3px;padding:8px 10px;border-radius:var(--radius-xs);font-size:.78em;border:1px solid transparent;transition:all .2s var(--ease)}
 .ritem.ok{background:rgba(var(--teal),.07);border-color:rgba(var(--teal),.13)}
@@ -306,6 +310,7 @@ details[open] summary{border-color:rgba(var(--p),.22);background:rgba(var(--p),.
 .pm-chip-grade{background:rgba(var(--p),.1);color:var(--p2)}
 .pm-chip-term{background:rgba(var(--blue),.1);color:rgb(var(--blue))}
 .pm-chip-set{background:rgba(var(--cyan),.1);color:rgb(var(--cyan))}
+.pm-chip-multi{background:rgba(var(--cyan),.1);color:rgb(var(--cyan))}
 .pm-card-footer{display:flex;align-items:center;justify-content:space-between;font-size:.7em;color:var(--text3);position:relative;z-index:1;padding-top:10px;border-top:1px solid var(--border)}
 .pm-card-q{font-weight:700;color:rgb(var(--teal))}
 .paper-leaf{display:flex;align-items:center;gap:14px;padding:12px 15px;margin:4px 0;background:var(--white-alpha-018);border:1px solid var(--border);border-radius:var(--radius-sm);transition:all .2s var(--ease);flex-wrap:wrap}
@@ -329,6 +334,9 @@ details[open] summary{border-color:rgba(var(--p),.22);background:rgba(var(--p),.
 .so-close:hover{background:rgba(var(--rose),.13);color:rgb(var(--rose))}
 .so-body{flex:1;overflow-y:auto;padding:24px}
 .so-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;background:var(--dark-fill);flex-shrink:0}
+/* ===== STEP 4 GRID ADJUST PANEL ===== */
+.grid-adjust-panel{max-width:1120px}
+@media(max-width:600px){.grid-adjust-panel{max-width:100%}}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px}
 .stat-card{position:relative;background:var(--glass);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px 16px;text-align:center;overflow:hidden;transition:border-color .3s}
 .stat-card:hover{border-color:var(--border2)}
@@ -374,6 +382,15 @@ details[open] summary{border-color:rgba(var(--p),.22);background:rgba(var(--p),.
 .stu-preview-chip{padding:6px 14px;border-radius:20px;font-size:.74em;font-weight:700;background:rgba(var(--cyan),.08);color:rgb(var(--cyan));border:1px solid rgba(var(--cyan),.15)}
 .stu-list-wrap{max-height:600px;overflow-y:auto}
 .class-select-info{background:rgba(var(--blue),.06);border:1px solid rgba(var(--blue),.12);border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;font-size:.78em;color:rgb(var(--blue));line-height:1.65}
+/* ===== ELECTIVE SUBJECT CLASS (選修科班別) ===== */
+.elec-cls-hd{padding:8px 12px;font-size:.74em;font-weight:700;color:var(--p2);background:rgba(var(--p),.06);border:1px solid rgba(var(--p),.12);border-radius:var(--radius-xs);margin:10px 0 6px}
+.elec-stu-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:4px;transition:all .2s var(--ease);cursor:pointer;user-select:none}
+.elec-stu-row:hover{border-color:rgba(var(--p),.35);background:rgba(var(--p),.04)}
+.elec-stu-row.sel{border-color:rgba(var(--teal),.4);background:rgba(var(--teal),.06)}
+.elec-stu-row .esr-check{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.7em;font-weight:800;color:#fff;transition:all .2s var(--ease)}
+.elec-stu-row.sel .esr-check{background:linear-gradient(135deg,rgb(var(--teal)),rgb(var(--blue)));border-color:transparent}
+.elec-stu-row .esr-name{flex:1;font-size:.84em;color:var(--text);font-weight:600;min-width:60px}
+.elec-stu-row .esr-orig{font-size:.7em;color:var(--text3);white-space:nowrap}
 .rec-detail-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .rec-detail-item{padding:12px;background:var(--white-alpha-02);border:1px solid var(--border);border-radius:var(--radius-xs)}
 .rec-detail-item .rdl{font-size:.65em;color:var(--text3);font-weight:600;text-transform:uppercase;margin-bottom:4px}
@@ -416,6 +433,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
 .tab-label{font-size:.68em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;padding-left:2px}
 .tab-row{display:flex;gap:5px;overflow-x:auto;padding:2px 0 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tab-row::-webkit-scrollbar{display:none}
+.tab-row.wrap{flex-wrap:wrap;overflow-x:visible}
 .tab-pill{padding:7px 18px;border-radius:100px;font-size:.78em;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .22s var(--ease);color:var(--text3);background:var(--white-alpha-02);border:1px solid var(--border);flex-shrink:0;user-select:none}
 .tab-pill:hover{color:var(--text2);border-color:var(--border2);background:var(--white-alpha-05)}
 .tab-pill.active{color:#fff;background:var(--grad1);border-color:transparent;box-shadow:0 3px 14px rgba(var(--p),.35)}
@@ -439,7 +457,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
   .step-line{min-width:8px}
   .page-body{padding:12px}
   .card{padding:17px;border-radius:var(--radius-sm)}
-  .answer-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+  .answer-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
   .result-grid{grid-template-columns:repeat(auto-fill,minmax(146px,1fr))}
   .paper-select-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
   .pm-card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
@@ -527,7 +545,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
     <div class="scan-step" id="scanStep3">
       <div class="card">
         <div class="card-head"><span class="step-num">3</span><div><div class="card-title">格線校準</div><div class="card-desc">調整格線以精確對準氣泡（包含班號區域）</div></div></div>
-        <div class="calib-cols">
+        <div class="calib-cols" id="gridCalibCols">
           <div class="calib-col-left">
             <div id="calibStatus" class="calib-box">💡 建議先「三點校準」，再用「自動對齊」微調。</div>
             <div class="flex" style="margin-bottom:12px"><button class="btn btn-auto" id="autoAlignBtn" onclick="autoAlignAll()">🎯 自動對齊</button><button class="btn btn-warn" id="calibBtn" onclick="startCalib()">📐 三點校準</button><button class="btn btn-s" onclick="resetGridDefaults()">↺ 重設</button></div>
@@ -549,6 +567,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
       <div class="card">
         <div id="batchNav" class="hidden"><div class="batch-bar"><button class="btn btn-s btn-sm" onclick="batchGo(currentBatchIdx-1)">◀ 上一份</button><span class="batch-info" id="batchInfo">1 / 1</span><button class="btn btn-s btn-sm" onclick="batchGo(currentBatchIdx+1)">下一份 ▶</button><span class="sep"></span><span class="batch-saved-tag" id="batchSavedTag">已儲存 0/0</span></div><div class="batch-thumb-strip2" id="batchThumbStrip"></div></div>
         <div class="card-head"><span class="step-num">4</span><div><div class="card-title">掃描結果</div><div class="card-desc" id="step4Desc">確認掃描結果並儲存</div></div></div>
+        <div class="flex" style="margin-bottom:12px"><button class="btn btn-warn btn-sm" onclick="openGridAdjust()">🔧 調整格線位置</button><span style="font-size:.72em;color:var(--text3);align-self:center">若自動對齊不準確，可手動調整格線後即時重新讀取</span></div>
         <div id="headerDetectBar" class="hidden"></div>
         <div id="scoreDisp"></div>
         <div id="multiWarn" class="warn-box hidden"></div>
@@ -574,7 +593,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
       <div style="margin-top:16px"><div style="font-size:.9em;font-weight:700;color:var(--text);margin-bottom:14px">✏️ 手動新增學生</div><div class="form-row"><span class="form-label">學年</span><select id="stuManYear" style="flex:1" onchange="onYearSelectChange(this)"></select></div><div class="form-row"><span class="form-label">姓名</span><input id="stuManName" class="text-input" placeholder="輸入學生姓名"></div><div class="form-row"><span class="form-label">班別</span><input id="stuManClass" class="text-input" placeholder="如：2A" style="max-width:120px"></div><div class="form-row"><span class="form-label">學號</span><input id="stuManNumber" type="number" class="num-input" placeholder="1" min="1" max="99"></div><button class="btn btn-p btn-sm" onclick="addStudentManual()">＋ 新增學生</button></div>
     </div>
     <div class="card">
-      <div class="flex-between" style="margin-bottom:18px"><div class="card-head" style="margin-bottom:0"><div class="card-icon ci-green">👨‍🎓</div><div><div class="card-title">學生名單</div><div class="card-desc">按學年及班別分類</div></div></div><div class="flex"><button class="btn btn-ghost btn-sm" onclick="loadStudentsFromFB()">↻ 重新載入</button><button class="btn btn-danger btn-sm" onclick="clearAllStudents()">🗑️ 清除全部</button></div></div>
+      <div class="flex-between" style="margin-bottom:18px"><div class="card-head" style="margin-bottom:0"><div class="card-icon ci-green">👨‍🎓</div><div><div class="card-title">學生名單</div><div class="card-desc">按學年及班別分類</div></div></div><div class="flex"><button class="btn btn-warn btn-sm" onclick="openElectiveModal()">🎯 增加選修科班別</button><button class="btn btn-ghost btn-sm" onclick="loadStudentsFromFB()">↻ 重新載入</button><button class="btn btn-danger btn-sm" onclick="clearAllStudents()">🗑️ 清除全部</button></div></div>
       <div id="studentListBox"><div class="empty-msg">尚未匯入學生資料。</div></div>
     </div>
   </div>
@@ -607,8 +626,9 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
         <button class="btn btn-ghost btn-sm" onclick="resetRecFilters()">↻ 重設篩選</button>
         <button class="btn btn-s btn-sm" id="exportScoreBtn" onclick="exportCSV()" disabled>📥 匯出成績</button>
         <button class="btn btn-s btn-sm" id="exportAnsBtn" onclick="exportAnswersCSV()" disabled>📝 匯出答案</button>
+        <button class="btn btn-danger btn-sm" id="deleteFilteredBtn" onclick="deleteFilteredRecs()" disabled>🗑️ 刪除此批記錄</button>
       </div>
-      <div id="exportHint" style="margin-top:8px;font-size:.72em;color:var(--text3)">💡 請先選擇班別才能匯出 CSV</div>
+      <div id="exportHint" style="margin-top:8px;font-size:.72em;color:var(--text3)">💡 請先選擇班別才能匯出 CSV 或刪除此批記錄</div>
     </div>
     <div id="recStatsArea" class="hidden"><div class="stats-grid"><div class="stat-card"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">已交人數</div></div><div class="stat-card"><div class="stat-val" id="statAvg">—</div><div class="stat-lbl">平均分</div></div><div class="stat-card"><div class="stat-val" id="statHigh">—</div><div class="stat-lbl">最高分</div></div><div class="stat-card"><div class="stat-val" id="statLow">—</div><div class="stat-lbl">最低分</div></div></div></div>
     <div id="recClassArea" class="hidden"><div class="card"><div class="flex-between" style="margin-bottom:14px"><div style="font-size:.92em;font-weight:700;color:var(--text)" id="recClassTitle">📋 學生成績</div></div><div id="recStudentListBox" style="max-height:600px;overflow-y:auto"></div></div></div>
@@ -621,8 +641,30 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
 <div class="so-overlay" id="soOverlay" onclick="closePaperModal()"></div>
 <div class="so-panel" id="soPanel">
   <div class="so-hdr"><h2 id="pmTitle"><span class="card-icon ci-purple" style="width:28px;height:28px;font-size:.8em">📝</span> 新增試卷</h2><button class="so-close" onclick="closePaperModal()">✕</button></div>
-  <div class="so-body"><div class="form-row"><span class="form-label">學年</span><select id="pYear" style="flex:1" onchange="onYearSelectChange(this)"></select></div><div class="form-row"><span class="form-label">級別</span><select id="pGrade" style="flex:1"></select></div><div class="form-row"><span class="form-label">學期</span><select id="pTerm" style="flex:1"><option>上學期考試</option><option>下學期考試</option><option>測驗一</option><option>測驗二</option></select></div><div class="form-row"><span class="form-label">調適</span><select id="pSet" style="flex:1"><option value="">不適用</option><option>Set 1</option><option>Set 2</option></select></div><div class="form-row"><span class="form-label">科目</span><select id="pSubject" style="flex:1" onchange="onSubjectSelectChange(this)"></select></div><div class="form-row"><span class="form-label">題數</span><input type="number" id="pTotalQ" class="num-input" min="1" max="80" value="40" onchange="onTotalQChange()" oninput="onTotalQChange()"><span style="font-size:.68em;color:var(--text3)">最多 80 題</span></div><hr class="divider"><div class="form-row"><span class="form-label">答案</span><input id="pQuickInput" class="text-input" placeholder="直接輸入 ABCDABCD..." maxlength="80"><button class="btn btn-p btn-sm" onclick="applyPaperQK()">套用</button><button class="btn btn-ghost btn-sm" onclick="clearPaperAK()">清除</button></div><div class="answer-grid" id="paperAKGrid"></div></div>
+  <div class="so-body"><div class="form-row"><span class="form-label">學年</span><select id="pYear" style="flex:1" onchange="onYearSelectChange(this)"></select></div><div class="form-row"><span class="form-label">級別</span><select id="pGrade" style="flex:1"></select></div><div class="form-row"><span class="form-label">學期</span><select id="pTerm" style="flex:1"><option>上學期考試</option><option>下學期考試</option><option>測驗一</option><option>測驗二</option></select></div><div class="form-row"><span class="form-label">調適</span><select id="pSet" style="flex:1"><option value="">不適用</option><option>Set 1</option><option>Set 2</option></select></div><div class="form-row"><span class="form-label">科目</span><select id="pSubject" style="flex:1" onchange="onSubjectSelectChange(this)"></select></div><div class="form-row"><span class="form-label">題數</span><input type="number" id="pTotalQ" class="num-input" min="1" max="80" value="40" onchange="onTotalQChange()" oninput="onTotalQChange()"><span style="font-size:.68em;color:var(--text3)">最多 80 題</span></div><hr class="divider"><div class="form-row"><span class="form-label">答案</span><input id="pQuickInput" class="text-input" placeholder="直接輸入 ABCDABCD..." maxlength="80"><button class="btn btn-p btn-sm" onclick="applyPaperQK()">套用</button><button class="btn btn-ghost btn-sm" onclick="clearPaperAK()">清除</button></div><div class="align-tip" style="margin:4px 0 10px">💡 勾選每題右方的「<strong>多</strong>」即可設定<strong>多選答案</strong>，學生答中任一個答案即得分。</div><div class="answer-grid" id="paperAKGrid"></div></div>
   <div class="so-footer"><button class="btn btn-s" onclick="closePaperModal()">取消</button><button class="btn btn-ok" id="savePaperBtn" onclick="savePaper()">💾 儲存試卷</button></div>
+</div>
+
+<!-- Elective Class Slide-Over -->
+<div class="so-overlay" id="elecOverlay" onclick="closeElectiveModal()"></div>
+<div class="so-panel" id="elecPanel">
+  <div class="so-hdr"><h2><span class="card-icon ci-amber" style="width:28px;height:28px;font-size:.8em">🎯</span> 增加選修科班別</h2><button class="so-close" onclick="closeElectiveModal()">✕</button></div>
+  <div class="so-body">
+    <div class="form-row"><span class="form-label">學年</span><select id="elecYear" style="flex:1" onchange="onElecYearChange()"></select></div>
+    <div class="form-row"><span class="form-label">班別</span><input id="elecClassName" class="text-input" placeholder="如：中四經濟、4-ECON"></div>
+    <div class="align-tip">💡 選修科學生來自同級不同班別。請從下方現有名單<strong>直接點選</strong>學生加入；系統會按<strong>原班別 → 原班號</strong>排序並自動編配班號。同一學生可同時屬於原班別與選修科班別。</div>
+    <div class="flex" style="margin:10px 0"><input id="elecSearch" class="text-input" placeholder="🔍 搜尋姓名 / 班別" oninput="renderElecSourceList()"><button class="btn btn-s btn-sm" onclick="elecSelectAllVisible()">全選</button><button class="btn btn-ghost btn-sm" onclick="elecClearSelection()">清除</button></div>
+    <div id="elecSourceList" style="max-height:52vh;overflow-y:auto"></div>
+  </div>
+  <div class="so-footer"><span id="elecCount" style="font-size:.78em;color:var(--text3);align-self:center;margin-right:auto"></span><button class="btn btn-s" onclick="closeElectiveModal()">取消</button><button class="btn btn-ok" onclick="saveElectiveClass()">💾 建立班別</button></div>
+</div>
+
+<!-- Grid Adjust Slide-Over (Step 4) -->
+<div class="so-overlay" id="gridAdjustOverlay" onclick="closeGridAdjust()"></div>
+<div class="so-panel grid-adjust-panel" id="gridAdjustPanel">
+  <div class="so-hdr"><h2><span class="card-icon ci-amber" style="width:28px;height:28px;font-size:.8em">🔧</span> 調整格線位置</h2><button class="so-close" onclick="closeGridAdjust()">✕</button></div>
+  <div class="so-body" id="gridAdjustBody"><div class="align-tip" style="margin-top:0">💡 此處沿用步驟 3 的格線校準工具。調整後按下方「完成並重新讀取」會即時以新格線重新讀取本頁答案。</div></div>
+  <div class="so-footer"><button class="btn btn-ok" onclick="closeGridAdjust()">✅ 完成並重新讀取</button></div>
 </div>
 
 <!-- Record Detail Slide-Over -->
