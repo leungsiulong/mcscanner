@@ -9,10 +9,6 @@ function renderStudentList(){
     if(stuTabYear&&studentDB[stuTabYear]){
       const classes=[...new Set(studentDB[stuTabYear].map(s=>s.class))].sort();
       if(classes.length){h+='<div class="tab-section"><div class="tab-label">班別（請選擇班別以顯示名單）</div><div class="tab-row wrap">';classes.forEach(c=>{const cnt=studentDB[stuTabYear].filter(s=>s.class===c).length;h+=`<div class="tab-pill${stuTabClass===c?' active':''}" onclick="setStuTab('class','${escQ(c)}')">${c}<span class="tc">(${cnt})</span></div>`;});h+='</div></div>';}
-      /* 學生名單：必須同時選擇「學年」及「班別」後，下方才會顯示名單。
-         若該班別為選修科班別，名單會顯示每位學生「原本的班別」及「原本的學號」
-         （origClass / origNumber），並先按原班別、再按原學號排序。
-         一律顯示「班別、學號、姓名」三欄。 */
       if(stuTabClass){
         let students=studentDB[stuTabYear].filter(s=>s.class===stuTabClass);
         students.sort((a,b)=>{
@@ -44,13 +40,7 @@ function renderStudentList(){
   function deleteStudent(year,name,cls){if(!studentDB[year])return;studentDB[year]=studentDB[year].filter(s=>!(s.name===name&&s.class===cls));if(!studentDB[year].length)delete studentDB[year];renderStudentList();saveStudentsToDB();}
   function clearAllStudents(){showConfirm('⚠️ 確定要清除所有學生資料嗎？',()=>{studentDB={};stuTabYear='';stuTabClass='';renderStudentList();saveStudentsToDB();toast('🗑️ 已清除');});}
 
-  /* ===== ELECTIVE SUBJECT CLASS (選修科班別) =====
-     選修科學生來自同級不同班別。此功能可建立新的選修科班別，
-     並從現有學生名單「直接點選」加入（無需勾選方格）。
-     系統會自動按「原班別 → 原班號」排序並依序編配班號。
-     同一學生可同時屬於原班別與選修科班別。
-     注意：加入選修科班別的學生會額外記錄「原班別 origClass」及
-     「原學號 origNumber」，於學生名單中顯示其原本的班別及學號。 */
+  /* ===== ELECTIVE SUBJECT CLASS (選修科班別) ===== */
   let electiveSelections=[];
   function elecKey(s){return (s.class||'')+'||'+(s.name||'')+'||'+(s.number||0);}
   function findElecSel(key){return electiveSelections.findIndex(e=>e.key===key);}
@@ -96,9 +86,6 @@ function renderStudentList(){
     const className=document.getElementById('elecClassName').value.trim();
     if(!className){showMsg('⚠️ 請輸入選修科班別名稱（例如：中四經濟）。');return;}
     if(!electiveSelections.length){showMsg('⚠️ 請至少選擇一位學生加入此選修科班別。');return;}
-    // 按「原班別 → 原班號」排序，再依序自動編配班號；
-    // 同時保留每位學生的「原班別 origClass」及「原學號 origNumber」，
-    // 以便在學生名單中顯示其原本的班別及學號。
     const ordered=electiveSelections.slice().sort((a,b)=>a.srcClass===b.srcClass?(a.origNumber||0)-(b.origNumber||0):(a.srcClass||'').localeCompare(b.srcClass||''));
     if(!studentDB[year])studentDB[year]=[];
     let added=0,skipped=0,n=0;
@@ -109,7 +96,11 @@ function renderStudentList(){
   
   /* ===== SCAN CLASS / STUDENT DROPDOWN ===== */
   function getYearFromPaper(){if(!selectedPaperId)return null;const p=papers.find(x=>x.id===selectedPaperId);return p?p.year:null;}
-  function populateScanClassDropdown(year){const area=document.getElementById('classSelectArea'),sel=document.getElementById('scanClassSelect'),info=document.getElementById('classSelectInfo');sel.innerHTML='<option value="">請選擇班別</option>';selectedScanClass='';if(!year){area.classList.add('hidden');return;}const students=studentDB[year]||[];if(!students.length){area.classList.remove('hidden');info.classList.remove('hidden');info.innerHTML=`⚠️ 學年 <strong>${year}</strong> 尚未匯入學生資料。`;return;}[...new Set(students.map(s=>s.class))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=`${c} (${students.filter(s=>s.class===c).length}人)`;sel.appendChild(o);});area.classList.remove('hidden');info.classList.add('hidden');}
-  function onScanClassChange(){selectedScanClass=document.getElementById('scanClassSelect').value;const info=document.getElementById('classSelectInfo'),year=getYearFromPaper();if(selectedScanClass&&year){const cnt=(studentDB[year]||[]).filter(s=>s.class===selectedScanClass).length;info.classList.remove('hidden');info.innerHTML=`✅ 已選擇 <strong>${selectedScanClass}</strong> 班，共 <strong>${cnt}</strong> 位學生`;}else info.classList.add('hidden');updatePaperBar();}
-  function populateStudentDropdown(){const sel=document.getElementById('studentSelect');sel.innerHTML='';const year=getYearFromPaper();if(!year||!selectedScanClass){sel.innerHTML='<option value="">請先選擇試卷及班別</option>';return;}const students=(studentDB[year]||[]).filter(s=>s.class===selectedScanClass).sort((a,b)=>(a.number||0)-(b.number||0));if(!students.length){sel.innerHTML='<option value="">該班別無學生資料</option>';return;}sel.innerHTML='<option value="">— 選擇學生 —</option>';students.forEach(s=>{const o=document.createElement('option');o.value=s.name;const used=usedStudentsInBatch.has(s.name);o.textContent=`${s.number}. ${s.name}${used?' ✓':''}`;if(used)o.style.color='rgb(var(--teal))';sel.appendChild(o);});if(batchMode&&batchResults[currentBatchIdx]){const bn=batchResults[currentBatchIdx].studentName;if(bn){sel.value=bn;document.getElementById('studentName').value=bn;}}}
+  /* 由所選試卷的級別（如「中四」）取得班別數字（「4」），供選修科掃描班別對應原班別使用 */
+  function getGradeNumFromPaper(){if(!selectedPaperId)return null;const p=papers.find(x=>x.id===selectedPaperId);if(!p)return null;const g=getPaperGrade(p);return GRADE_NUM_MAP[g]||null;}
+  /* 判斷某班別是否為選修科班別（其學生帶有 origClass 即代表來自不同原班別） */
+  function isElectiveClass(year,cls){if(!year||!cls)return false;const students=(studentDB[year]||[]).filter(s=>s.class===cls);return students.some(s=>s.origClass!=null);}
+  function populateScanClassDropdown(year){const area=document.getElementById('classSelectArea'),sel=document.getElementById('scanClassSelect'),info=document.getElementById('classSelectInfo');sel.innerHTML='<option value="">請選擇班別</option>';selectedScanClass='';electiveScanMode=false;if(!year){area.classList.add('hidden');return;}const students=studentDB[year]||[];if(!students.length){area.classList.remove('hidden');info.classList.remove('hidden');info.innerHTML=`⚠️ 學年 <strong>${year}</strong> 尚未匯入學生資料。`;return;}[...new Set(students.map(s=>s.class))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=`${c} (${students.filter(s=>s.class===c).length}人)`;sel.appendChild(o);});area.classList.remove('hidden');info.classList.add('hidden');}
+  function onScanClassChange(){selectedScanClass=document.getElementById('scanClassSelect').value;const info=document.getElementById('classSelectInfo'),year=getYearFromPaper();electiveScanMode=isElectiveClass(year,selectedScanClass);if(selectedScanClass&&year){const cnt=(studentDB[year]||[]).filter(s=>s.class===selectedScanClass).length;info.classList.remove('hidden');let msg=`✅ 已選擇 <strong>${selectedScanClass}</strong> 班，共 <strong>${cnt}</strong> 位學生`;if(electiveScanMode){const gn=getGradeNumFromPaper();msg+=`<br>🎯 此為<strong>選修科班別</strong>：格線校準時會自動新增「掃描班別 (A–S)」欄；`+(gn?`系統會以「${gn}＋班別字母」對應原班別、再配合班號自動匹配學生。`:`系統會以「班別字母」對應原班別、再配合班號自動匹配學生。`);}info.innerHTML=msg;}else info.classList.add('hidden');updatePaperBar();}
+  function populateStudentDropdown(){const sel=document.getElementById('studentSelect');sel.innerHTML='';const year=getYearFromPaper();if(!year||!selectedScanClass){sel.innerHTML='<option value="">請先選擇試卷及班別</option>';return;}const students=(studentDB[year]||[]).filter(s=>s.class===selectedScanClass).sort((a,b)=>(a.number||0)-(b.number||0));if(!students.length){sel.innerHTML='<option value="">該班別無學生資料</option>';return;}sel.innerHTML='<option value="">— 選擇學生 —</option>';students.forEach(s=>{const o=document.createElement('option');o.value=s.name;const used=usedStudentsInBatch.has(s.name);const origTag=(s.origClass!=null)?` (${s.origClass}#${s.origNumber!=null?s.origNumber:'-'})`:'';o.textContent=`${s.number}. ${s.name}${origTag}${used?' ✓':''}`;if(used)o.style.color='rgb(var(--teal))';sel.appendChild(o);});if(batchMode&&batchResults[currentBatchIdx]){const bn=batchResults[currentBatchIdx].studentName;if(bn){sel.value=bn;document.getElementById('studentName').value=bn;}}}
   function onStudentSelect(){const v=document.getElementById('studentSelect').value;document.getElementById('studentName').value=v;if(batchMode&&batchResults[currentBatchIdx])batchResults[currentBatchIdx].studentName=v;}

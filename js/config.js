@@ -24,14 +24,20 @@ let stuTabYear='',stuTabClass='';
 let recTabYear='',recTabTerm='',recTabSubject='',recTabClass='';
 let scanTabYear='',scanTabSubject='',scanTabGrade='',scanTabTerm='',scanTabSet='';
 
-let HG={no1X:288,no2X:324,startY:167,rowS:27.5,hbw:14,hbh:10,enabled:true};
-let headerColOffsets={no1:{dx:0,dy:0},no2:{dx:0,dy:0}};
-let headerAutoOffsets={no1:{dx:0,dy:0},no2:{dx:0,dy:0}};
+/* ===== 班號 + 選修科「掃描班別」格線設定 =====
+   HG.clsX：選修科「掃描班別」欄（A–S）的 X 座標，預設位於班號十位左方。 */
+let HG={no1X:288,no2X:324,startY:167,rowS:27.5,hbw:14,hbh:10,enabled:true,clsX:252};
+let headerColOffsets={no1:{dx:0,dy:0},no2:{dx:0,dy:0},cls:{dx:0,dy:0}};
+let headerAutoOffsets={no1:{dx:0,dy:0},no2:{dx:0,dy:0},cls:{dx:0,dy:0}};
 let selectedHdrCol='no1';
 let detectedHeaderInfo=null;
 let hdrCalibActive=false,hdrCalibStep=0,hdrCalibPts=[];
 const HDR_CALIB_LABELS=['班號十位 0 氣泡中心','班號十位 9 氣泡中心','班號個位 0 氣泡中心'];
-const HDR_COL_COUNTS={no1:10,no2:10};
+const HDR_COL_COUNTS={no1:10,no2:10,cls:9};
+/* 選修科「掃描班別」欄的選項字母（A–H 加 S，共 9 個） */
+const ELEC_CLASS_LETTERS=['A','B','C','D','E','F','G','H','S'];
+/* 目前所選班別是否為選修科班別（啟用掃描班別欄偵測） */
+let electiveScanMode=false;
 /* 掃描結果步驟「調整格線」視窗的狀態 */
 let gridAdjustMode=false,gridAdjustOrigParent=null,gridAdjustOrigNext=null;
 
@@ -40,6 +46,8 @@ let db=null,fbConnected=false,fbSaveTimer=null;
 /* YEARS and SUBJECTS are now mutable so teachers can add custom values */
 let YEARS=['2025/2026','2026/2027','2027/2028','2028/2029'];
 const GRADES=['中一','中二','中三','中四','中五','中六'];
+/* 級別 → 班別數字（用於選修科：級別數字 + 掃描班別字母 = 原班別，例如 中四 + D = 4D） */
+const GRADE_NUM_MAP={'中一':'1','中二':'2','中三':'3','中四':'4','中五':'5','中六':'6'};
 let SUBJECTS=['English','中文','數學','通識/公社','綜合科學','物理','化學','生物','地理','歷史','經濟','BAFS','ICT','體育','其他'];
 const STEP_LABELS=['選擇試卷','上載圖片','四角定位','格線校準','掃描結果'];
 if(typeof pdfjsLib!=='undefined')pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
