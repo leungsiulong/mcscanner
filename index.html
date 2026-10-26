@@ -657,7 +657,19 @@ input[type=checkbox]{width:16px;height:16px;accent-color:rgb(var(--p));cursor:po
 <div class="so-overlay" id="soOverlay" onclick="closePaperModal()"></div>
 <div class="so-panel" id="soPanel">
   <div class="so-hdr"><h2 id="pmTitle"><span class="card-icon ci-purple" style="width:28px;height:28px;font-size:.8em">📝</span> 新增試卷</h2><button class="so-close" onclick="closePaperModal()">✕</button></div>
-  <div class="so-body"><div class="form-row"><span class="form-label">學年</span><select id="pYear" style="flex:1" onchange="onYearSelectChange(this)"></select></div><div class="form-row"><span class="form-label">級別</span><select id="pGrade" style="flex:1"></select></div><div class="form-row"><span class="form-label">學期</span><select id="pTerm" style="flex:1"><option>上學期考試</option><option>下學期考試</option><option>測驗一</option><option>測驗二</option></select></div><div class="form-row"><span class="form-label">調適</span><select id="pSet" style="flex:1"><option value="">不適用</option><option>Set 1</option><option>Set 2</option></select></div><div class="form-row"><span class="form-label">科目</span><select id="pSubject" style="flex:1" onchange="onSubjectSelectChange(this)"></select></div><div class="form-row"><span class="form-label">題數</span><input type="number" id="pTotalQ" class="num-input" min="1" max="80" value="40" onchange="onTotalQChange()" oninput="onTotalQChange()"><span style="font-size:.68em;color:var(--text3)">最多 80 題</span></div><hr class="divider"><div class="form-row"><span class="form-label">答案</span><input id="pQuickInput" class="text-input" placeholder="直接輸入 ABCDABCD..." maxlength="80"><button class="btn btn-p btn-sm" onclick="applyPaperQK()">套用</button><button class="btn btn-ghost btn-sm" onclick="clearPaperAK()">清除</button></div><div class="align-tip" style="margin:4px 0 10px">💡 勾選每題右方的「<strong>多選</strong>」即可設定<strong>多選答案</strong>，學生答中任一個答案即得分。</div><div class="answer-grid" id="paperAKGrid"></div></div>
+  <div class="so-body">
+  <div class="form-row">
+    <span class="form-label">試卷名稱</span>
+    <input
+      id="pName"
+      class="text-input"
+      placeholder="選填，例如：中三數學科上學期測驗"
+      maxlength="100"
+    >
+  </div>
+
+  <div class="form-row"><span class="form-label">學年</span>
+    <select id="pYear" style="flex:1" onchange="onYearSelectChange(this)"></select></div><div class="form-row"><span class="form-label">級別</span><select id="pGrade" style="flex:1"></select></div><div class="form-row"><span class="form-label">學期</span><select id="pTerm" style="flex:1"><option>上學期考試</option><option>下學期考試</option><option>測驗一</option><option>測驗二</option></select></div><div class="form-row"><span class="form-label">調適</span><select id="pSet" style="flex:1"><option value="">不適用</option><option>Set 1</option><option>Set 2</option></select></div><div class="form-row"><span class="form-label">科目</span><select id="pSubject" style="flex:1" onchange="onSubjectSelectChange(this)"></select></div><div class="form-row"><span class="form-label">題數</span><input type="number" id="pTotalQ" class="num-input" min="1" max="80" value="40" onchange="onTotalQChange()" oninput="onTotalQChange()"><span style="font-size:.68em;color:var(--text3)">最多 80 題</span></div><hr class="divider"><div class="form-row"><span class="form-label">答案</span><input id="pQuickInput" class="text-input" placeholder="直接輸入 ABCDABCD..." maxlength="80"><button class="btn btn-p btn-sm" onclick="applyPaperQK()">套用</button><button class="btn btn-ghost btn-sm" onclick="clearPaperAK()">清除</button></div><div class="align-tip" style="margin:4px 0 10px">💡 勾選每題右方的「<strong>多選</strong>」即可設定<strong>多選答案</strong>，學生答中任一個答案即得分。</div><div class="answer-grid" id="paperAKGrid"></div></div>
   <div class="so-footer"><button class="btn btn-s" onclick="closePaperModal()">取消</button><button class="btn btn-ok" id="savePaperBtn" onclick="savePaper()">💾 儲存試卷</button></div>
 </div>
 
